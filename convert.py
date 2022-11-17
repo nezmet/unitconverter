@@ -11,6 +11,7 @@ class Unit:
 def convert(s):
     [from_, to_] = s.split(' to ')
 
+    # Add more units for conversion here:
     for i in [Unit('kg',  ['lbs', 'oz', 'g'], [2.205, .0283, 1000]),
               Unit('lbs', ['oz',  'kg', 'g'], [16, .4535, .0022])]:
         if from_.endswith(i.unitname):
