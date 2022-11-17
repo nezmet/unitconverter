@@ -11,13 +11,13 @@ class Unit:
 def convert(s):
     [from_, to_] = s.split(' to ')
 
-    for i in [Unit('kg',  ['lbs', 'oz', 'g'], [2.205, .028, 1000]),
+    for i in [Unit('kg',  ['lbs', 'oz', 'g'], [2.205, .0283, 1000]),
               Unit('lbs', ['oz',  'kg', 'g'], [16, .4535, .0022])]:
         if from_.endswith(i.unitname):
             val = float(from_.removesuffix(i.unitname))
             ind = i.convertto.index(to_)
+            return f'{from_} is {val * i.factor[ind]:.2f}{i.convertto[ind]}'
 
-    return f'{from_} is {val * i.factor[ind]:.1f}{i.convertto[ind]}'
 
 def parse(args):
     result = ''
