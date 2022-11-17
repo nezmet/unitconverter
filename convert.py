@@ -19,7 +19,6 @@ def convert(s):
             ind = i.convertto.index(to_)
             return f'{from_} is {val * i.factor[ind]:.2f}{i.convertto[ind]}'
 
-
 def parse(args):
     result = ''
 
@@ -29,6 +28,9 @@ def parse(args):
     return result.removesuffix(' ')
 
 if __name__ == "__main__":
-    val = parse(sys.argv[1:])
-    result = convert(val)
-    print(result)
+    try:
+        val = parse(sys.argv[1:])
+        result = convert(val)
+        print(result)
+    except:
+        print("Incorrect syntax. Example: 10kg to lbs")
