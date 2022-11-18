@@ -8,17 +8,25 @@ class Unit:
         self.convertto = convertto
         self.factor = factor
 
+def _m(factor): return lambda v: v * factor
+
+Unit.conversions = [Unit('kg', ['lbs', 'oz', 'g'], [_m(2.205), _m(35.274), _m(1000)]),
+                    Unit('lbs', ['kg', 'oz', 'g'], [_m(.4535), _m(16), _m(453.592)]),
+                    Unit('l', ['oz', 'fl oz'], [_m(33.814), _m(33.814)]),
+                    Unit('c', ['f'], [lambda c: c * 1.8 + 32]),
+                    Unit('f', ['c'], [lambda f: (f - 32) * .5555])]
+
 def convert(s):
     [from_, to_] = s.split(' to ')
 
     # Add more units for conversion here:
-    for i in [Unit('kg',  ['lbs', 'oz', 'g'], [2.205, .0283, 1000]),
-              Unit('lbs', ['oz',  'kg', 'g'], [16, .4535, .0022]),
-              Unit('l', ['fl oz', 'oz'], [33.814, 33.814])]:
+    # , Unit('X', ['X','X'], [value, value])
+    for i in Unit.conversions:
         if from_.endswith(i.unitname):
             val = float(from_.removesuffix(i.unitname))
             ind = i.convertto.index(to_)
-            return f'{from_} is {val * i.factor[ind]:.2f}{i.convertto[ind]}'
+            res = i.factor[ind](val)
+            return f'{from_} is {res:.1f}{i.convertto[ind]}'
 
 def parse(args):
     result = ''
@@ -29,9 +37,10 @@ def parse(args):
     return result.removesuffix(' ')
 
 if __name__ == "__main__":
+
     try:
         val = parse(sys.argv[1:])
         result = convert(val)
         print(result)
-    except:
-        print("Incorrect syntax. Example: 10kg to lbs")
+    except Exception as e:
+        print(e)
