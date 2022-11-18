@@ -9,12 +9,16 @@ class Unit:
         self.factor = factor
 
 def _m(factor): return lambda v: v * factor
+def _a(factor): return lambda v: v + factor
 
 Unit.conversions = [Unit('kg', ['lbs', 'oz', 'g'], [_m(2.205), _m(35.274), _m(1000)]),
-                    Unit('lbs', ['kg', 'oz', 'g'], [_m(.4535), _m(16), _m(453.592)]),
+                    Unit('lbs', ['kg', 'oz', 'g'], [_m(.454), _m(16), _m(453.592)]),
                     Unit('l', ['oz', 'fl oz'], [_m(33.814), _m(33.814)]),
-                    Unit('c', ['f'], [lambda c: c * 1.8 + 32]),
-                    Unit('f', ['c'], [lambda f: (f - 32) * .5555])]
+                    Unit('c', ['f', 'k'], [lambda c: c * 1.8 + 32, _a(273.15)]),
+                    Unit('f', ['c', 'k'], [lambda f: (f - 32) * .556, lambda k: ((k -32) * .556) - 273.15]),
+                    Unit('k', ['c', 'f'], [_a(-273.15), lambda f: (f - 273.15) * 1.8 + 32]),
+                    Unit('tsp', ['g'], [_m(4.929)]),
+                    Unit('tbsp', ['g'], [_m(14.79)])]
 
 def convert(s):
     [from_, to_] = s.split(' to ')
